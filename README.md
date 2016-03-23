@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-APPLICATION DE ITA (Information Terrafic Algerie) backend 
-=======
-# itaBackend
->>>>>>> 36f0d1f8e4411cf180a586f54138ff75f298f973
+# itaBackend  (Information Terrafic Algerie) 
+
+a PHP API powered ZF2 for [itaFrondend](https://github.com/abdouMca/itaFrontend)  

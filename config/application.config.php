@@ -12,7 +12,6 @@ return array(
         'DoctrineORMModule',
         'Application',
         'Api',
-        'SanRestful',
         'Common',
         'User',
         'Contact',
