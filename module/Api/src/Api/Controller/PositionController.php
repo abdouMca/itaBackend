@@ -14,15 +14,11 @@ class PositionController extends BaseController
 
     const TIME_TO_EXPIRE = 3600;
 
-
-    public function get($id)
-    {
-        if (!$id) {
-            $this->showErrorMessage('id is required', 100);
-        }
-        return new JsonModel();
-    }
-
+    /**
+     * display list of last position based on TTL
+     *
+     * @return JsonModel
+     */
     public function getList()
     {
         $hydrator = new DoctrineObject(
@@ -43,10 +39,28 @@ class PositionController extends BaseController
     }
 
 
+    /**
+     * get assets dir
+     *
+     * @return string
+     */
     protected function getImageDir()
     {
         $uri = $this->getRequest()->getUri();
         $base = sprintf('%s://%s/img/position/', $uri->getScheme(), $uri->getHost());
         return $base;
+    }
+
+    /**
+     * @param $id
+     * @return JsonModel
+     * @throws \Exception
+     */
+    public function get($id)
+    {
+        if (!$id) {
+            $this->showErrorMessage('id is required', 100);
+        }
+        return new JsonModel();
     }
 }

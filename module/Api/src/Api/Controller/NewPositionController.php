@@ -15,35 +15,26 @@ use Zend\View\Model\JsonModel;
 class NewPositionController extends BaseController
 {
 
+    /**
+     * save new position and return the current sent data
+     *
+     * @param $data
+     * @return JsonModel
+     */
     public function create($data)
     {
-
-        //echo exec('echo '.serialize($_POST).' > /home/khaled/Desktop/file.txt');
-        error_log("You messed up!", 3, BASE_PATH."/../data/log/my-errors.log");
-
         $file = $this->params()->fromFiles();
-        $filename = $this->uploadImage($file);
-
-        $position = new Position();
-        $position->setLatitude($data['latitude']);
-        $position->setLongitude($data['longitude']);
-        $position->setComment($data['comment']);
-        $position->setStatus($data['status']);
-
-        $isAccident = isset($data['isAccident']) ?1:0;
-        $position->setIsAccident($isAccident);
-
-        $position->setImage($filename);
-        $position->setCreatedDate(time());
-
-        $this->getEntityManager()->persist($position);
-        $this->em->flush();
-
-        $model = new JsonModel();
-        $model->setVariables($data);
-        return $model;
+        $data['filename'] = $this->uploadImage($file);
+        $this->_savePosition($data);
+        return new JsonModel($data);;
     }
 
+    /**
+     * upload files
+     *
+     * @param $file
+     * @return mixed|string
+     */
     public function uploadImage($file){
 
         $filename = $file['file']['name'];
@@ -63,4 +54,30 @@ class NewPositionController extends BaseController
         }
     }
 
+    /**
+     * save
+     *
+     * @param $data
+     */
+    protected function _savePosition($data){
+        $position = new Position();
+        $position->setLatitude($data['latitude']);
+        $position->setLongitude($data['longitude']);
+        $position->setComment($data['comment']);
+        $position->setStatus($data['status']);
+
+        $isAccident = isset($data['isAccident']) ?1:0;
+        $position->setIsAccident($isAccident);
+
+        $position->setImage($data['filename']);
+        $position->setCreatedDate(time());
+
+        $this->getEntityManager()->persist($position);
+        $this->em->flush();
+        //TODO use Object logger
+        error_log(sprintf("position with data %s saved %s \n", serialize($data), date("d-m-Y_H-i")),
+            3,
+            BASE_PATH."/../data/log/my-errors.log"
+        );
+    }
 }

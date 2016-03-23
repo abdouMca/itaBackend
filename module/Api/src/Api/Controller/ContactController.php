@@ -12,6 +12,12 @@ use Zend\View\Model\JsonModel;
 class ContactController extends BaseController
 {
 
+    /**
+     * send email
+     *
+     * @param $data
+     * @return bool
+     */
     public function create($data){
 
         $model = new JsonModel();

@@ -59,6 +59,4 @@ class BaseController extends AbstractRestfulController
         return $this->em;
     }
 
-
-
 }
